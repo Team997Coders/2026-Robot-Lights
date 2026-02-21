@@ -5,7 +5,7 @@ import math
 
 STRIP_LENGTH = 45
 BRIGHTNESS = 1 #adjust for brightness of the LEDs, scale 0-1
-ALLIANCE = "red" #change to "blue" for blue alliance
+ALLIANCE = "blue" #change to "blue" for blue alliance
 
 pin_left = Pin(0)
 pixel_left = neopixel.NeoPixel(pin_left, STRIP_LENGTH) #strips from last year are 45 lights long
@@ -19,7 +19,7 @@ def fill_strip(strip, color):
 def idle():
     global ALLIANCE
     
-    tick = int(round(utime.ticks_ms() / 100))
+    tick = int(round(utime.ticks_ms() / 125))
     
     for i in range (0, STRIP_LENGTH, 1):
         
@@ -59,7 +59,7 @@ def active():
             print("invalid alliance color")
 
 def shoot():
-    tick = int(round(utime.ticks_ms() / 35))
+    tick = int(round(utime.ticks_ms() / 25))
     
     for i in range (0, STRIP_LENGTH, 1):
         value = ((i + 50) - tick) % 8
@@ -70,8 +70,24 @@ def shoot():
         
 #         print(value)
 
+def target_search():
+    tick = int(round(0 - utime.ticks_ms() / 100))
+    
+    for i in range (0, STRIP_LENGTH, 1):
+        if (tick + i) % 3 == 0:
+            set_pixel(pixel_left, i, (0, 255, 0))
+        else:
+            set_pixel(pixel_left, i, (0, 20, 0))
+    
+#     for i in range (0, STRIP_LENGTH, 1):
+#         value = ((i + 50) - tick) % 8
+#         value = value * 0.9
+#         value = value ** 3
+#         value = int(round(value))
+#         set_pixel(pixel_left, i, (0, value, 0))
+
 def target_locked():
-    tick = int(round(utime.ticks_ms() / 30))
+    tick = int(round(utime.ticks_ms() / 20))
     
     value = 1 + math.sin(tick / 2)
     value = value * 100
@@ -102,9 +118,18 @@ def climbed():
     
     value = 1 + math.sin(tick / 8)
     value = value * 100
+    value = value + 50
     value = int(round(value))
     
     fill_strip(pixel_left, (value, 0, value))
+    
+def alert():
+    tick = int(round((0 - utime.ticks_ms() )/ 15))
+    
+    value = tick % 25
+    value = value * 10
+    
+    fill_strip(pixel_left, (value, value * 0.7, value * 0.6))
           
           
 pixel_left.fill((0, 0, 0))
@@ -114,7 +139,9 @@ utime.sleep(1)
 
 
 while True:
-    climbed()
+    #target_search()
+    shoot()
     
     utime.sleep_ms(5) #adjust for peak frames per second of the robot, 20ms is approx 50fps max rendering ability
     pixel_left.write()
+
