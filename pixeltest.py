@@ -71,14 +71,40 @@ def shoot():
 #         print(value)
 
 def target_locked():
-    tick = int(round(utime.ticks_ms() / 60))
+    tick = int(round(utime.ticks_ms() / 30))
     
-    value = 1 + math.sin(tick)
+    value = 1 + math.sin(tick / 2)
     value = value * 100
     value = int(round(value))
     
     fill_strip(pixel_left, (0, value, 0))
-  
+    
+def climbing():
+    tick = int(round(utime.ticks_ms() / 10))
+    
+    cycletick = tick % (STRIP_LENGTH * 5)
+    segment_length = STRIP_LENGTH * 1.25
+    
+    if cycletick < STRIP_LENGTH:
+        set_pixel(pixel_left, int(tick % segment_length), (255, 0, 255))
+    elif cycletick > STRIP_LENGTH * 1.25 and cycletick < STRIP_LENGTH * 2.25:
+        set_pixel(pixel_left, int(tick % segment_length), (0, 0, 0))
+    elif cycletick > STRIP_LENGTH * 2.5 and cycletick < STRIP_LENGTH * 3.5:
+        set_pixel(pixel_left, int(STRIP_LENGTH - 1 - (tick % segment_length)), (255, 0, 255))
+    elif cycletick > STRIP_LENGTH * 3.75 and cycletick < STRIP_LENGTH * 4.75:
+        set_pixel(pixel_left, int(STRIP_LENGTH - 1 - (tick % segment_length)), (0, 0, 0))
+    elif cycletick == (STRIP_LENGTH * 5) - 1:
+        fill_strip(pixel_left, (0, 0, 0))
+        # print("clear")
+
+def climbed():
+    tick = int(round(utime.ticks_ms() / 30))
+    
+    value = 1 + math.sin(tick / 8)
+    value = value * 100
+    value = int(round(value))
+    
+    fill_strip(pixel_left, (value, 0, value))
           
           
 pixel_left.fill((0, 0, 0))
@@ -88,7 +114,7 @@ utime.sleep(1)
 
 
 while True:
-    shoot()
+    climbed()
     
-    utime.sleep_ms(20) #adjust for peak frames per second of the robot, 20ms is approx 50fps max rendering ability
+    utime.sleep_ms(5) #adjust for peak frames per second of the robot, 20ms is approx 50fps max rendering ability
     pixel_left.write()
