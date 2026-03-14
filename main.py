@@ -105,7 +105,7 @@ def statusIntaking():
         
         set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, int(round(value / 2)), 0)) 
 def statusPurge():
-    tick = int(round(utime.ticks_ms() / 30))
+    tick = int(round(utime.ticks_ms() / 50))
     
     for i in range (0, STRIP_LENGTH, 1):
         
