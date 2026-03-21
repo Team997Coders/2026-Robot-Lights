@@ -54,7 +54,7 @@ def statusIdle():
         value = value ** 2
         value = int(round(value))
         
-        set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, value, value))            
+        set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, 0, value))            
 def statusActiveRed():
     statusActive("red")
 def statusActiveBlue():
@@ -83,7 +83,7 @@ def statusShoot():
         value = value * 0.9
         value = value ** 3
         value = int(round(value))
-        set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, int(round(value / 15)), 0))
+        set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, int(round(value / 2)), value)) # replace with (value, int(round(value / 15)), 0) for original red-orange color
 def statusIntaking():
     tick = int(round(utime.ticks_ms() / 30))
     
