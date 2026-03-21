@@ -4,7 +4,7 @@ import utime
 import math
 
 STRIP_LENGTH = 45
-BRIGHTNESS = 1 #adjust for brightness of the LEDs, scale 0-1
+BRIGHTNESS = 0.5 #adjust for brightness of the LEDs, scale 0-1
 
 pin_left = Pin(2)
 pixels = neopixel.NeoPixel(pin_left, STRIP_LENGTH) #strips from last year are 45 lights long
