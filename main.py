@@ -6,7 +6,7 @@ import math
 STRIP_LENGTH = 45
 BRIGHTNESS = 1 #adjust for brightness of the LEDs, scale 0-1
 
-pin_left = Pin(0)
+pin_left = Pin(2)
 pixels = neopixel.NeoPixel(pin_left, STRIP_LENGTH) #strips from last year are 45 lights long
 
 dio0 = Pin(18, Pin.IN, Pin.PULL_DOWN)
@@ -25,23 +25,8 @@ def readStatus():
 def setStatus():
     status = readStatus()
     [statusIdleRed, statusIdleBlue, statusActiveRed, statusActiveBlue, statusPassing, statusTargetLocked, statusShoot, statusIntaking, statusPurge][status]()
-
-def statusIdle(alliance):
-    tick = int(round(utime.ticks_ms() / 125))
     
-    for i in range (0, STRIP_LENGTH, 1):
-        
-        value = ((i + 50) - tick) % 10
-        value = value * 1.5
-        value = value ** 2
-        value = int(round(value))
-        
-        if alliance == "red":
-            set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, 0, 0))
-        elif alliance == "blue":
-            set_pixel(pixels, STRIP_LENGTH - 1 - i, (0, 0, value))
-        else:
-            print("invalid alliance color")
+
 def statusActive(alliance):
     tick = int(round(utime.ticks_ms() / 20))
     
@@ -58,12 +43,18 @@ def statusActive(alliance):
             set_pixel(pixels, STRIP_LENGTH - 1 - i, (0, 0, value))
         else:
             print("invalid alliance color")
-            
-            
-def statusIdleRed():
-    statusIdle("red")
-def statusIdleBlue():
-    statusIdle("blue")
+
+def statusIdle():
+    tick = int(round(utime.ticks_ms() / 125))
+    
+    for i in range (0, STRIP_LENGTH, 1):
+        
+        value = ((i + 50) - tick) % 10
+        value = value * 1.5
+        value = value ** 2
+        value = int(round(value))
+        
+        set_pixel(pixels, STRIP_LENGTH - 1 - i, (value, value, value))            
 def statusActiveRed():
     statusActive("red")
 def statusActiveBlue():
