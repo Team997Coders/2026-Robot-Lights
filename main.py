@@ -24,7 +24,7 @@ def readStatus():
     return int(strstatus, 2)
 def setStatus():
     status = readStatus()
-    [statusIdleRed, statusIdleBlue, statusActiveRed, statusActiveBlue, statusPassing, statusTargetLocked, statusShoot, statusIntaking, statusPurge][status]()
+    [statusIdle, statusSpecial, statusActiveRed, statusActiveBlue, statusPassing, statusTargetLocked, statusShoot, statusIntaking, statusPurge][status]()
     
 
 def statusActive(alliance):
@@ -106,6 +106,9 @@ def statusPurge():
         value = int(round(value))
         
         set_pixel(pixels, i, (value, int(round(value / 2)), 0))
+        
+def statusSpecial():
+    tick = int(round(utime.ticks_ms() / 50))
         
 while True:
     setStatus()
