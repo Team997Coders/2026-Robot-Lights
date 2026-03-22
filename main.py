@@ -9,10 +9,10 @@ BRIGHTNESS = 0.5 #adjust for brightness of the LEDs, scale 0-1
 pin_left = Pin(2)
 pixels = neopixel.NeoPixel(pin_left, STRIP_LENGTH) #strips from last year are 45 lights long
 
-dio0 = Pin(18, Pin.IN, Pin.PULL_DOWN)
-dio1 = Pin(19, Pin.IN, Pin.PULL_DOWN)
-dio2 = Pin(20, Pin.IN, Pin.PULL_DOWN)
-dio3 = Pin(21, Pin.IN, Pin.PULL_DOWN)
+dio0 = Pin(18, Pin.IN, Pin.PULL_UP)
+dio1 = Pin(19, Pin.IN, Pin.PULL_UP)
+dio2 = Pin(20, Pin.IN, Pin.PULL_UP)
+dio3 = Pin(21, Pin.IN, Pin.PULL_UP)
 
 def set_pixel(strip, pixel, color):
     strip[pixel] = (int(color[0] * BRIGHTNESS), int(color[1] * BRIGHTNESS), int(color[2] * BRIGHTNESS))
@@ -124,7 +124,7 @@ def unused6():
 def unused7():
     pass
 def unused8():
-    pass        
+    pass
 while True:
     setStatus()
     utime.sleep_ms(5)
